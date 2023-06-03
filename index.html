@@ -10,24 +10,87 @@
     <p id="text"> </p>
     <button onclick="myFunction()">Click me</button>
     <script>
+        var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+
         function myFunction() {
-            var recognizer = new webkitSpeechRecognition();
-            recognizer.interimResults = true;
-            //recognizer.lang = 'ru-Ru';
-            recognizer.lang = 'en-En';
+            //var recognizer = new webkitSpeechRecognition();
+            //recognizer.interimResults = true;
+            ////recognizer.lang = 'ru-Ru';
+            //recognizer.lang = 'en-En';
+            //console.log(recognizer);
+            //recognizer.onresult = function (event) {
+            //    console.log(event);
+            //    var result = event.results[event.resultIndex];
+            //    if (result.isFinal) {
+            //        //alert('Вы сказали: ' + result[0].transcript);
+            //    } else {
 
-            recognizer.onresult = function (event) {
-                var result = event.results[event.resultIndex];
-                if (result.isFinal) {
-                    alert('Вы сказали: ' + result[0].transcript);
-                } else {
+            //        //let p = document.getElementById("text");
+            //        //p.innerText = 'Результат: ' + result[0].transcript;
+            //    }
+            //};
 
-                    let p = document.getElementById("text");
-                    p.innerText = 'Результат: ' + result[0].transcript;
-                }
+            //recognizer.start();
+
+            //navigator.mediaDevices.getUserMedia({ audio: true })
+            //    .then(function (stream) {
+            //        var audioContext = new AudioContext();
+            //        var source = audioContext.createMediaStreamSource(stream);
+            //        var processor = audioContext.createScriptProcessor(1024, 1, 1);
+
+            //        source.connect(processor);
+            //        processor.connect(audioContext.destination);
+
+            //        processor.onaudioprocess = function (audioProcessingEvent) {
+            //            var inputBuffer = audioProcessingEvent.inputBuffer;
+            //            var outputBuffer = audioProcessingEvent.outputBuffer;
+
+            //            // Проходим через все каналы (для моно будет только один канал)
+            //            for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+            //                var inputData = inputBuffer.getChannelData(channel);
+            //                var outputData = outputBuffer.getChannelData(channel);
+
+            //                // Проходим через все значения в буфере и обрабатываем их
+            //                for (var sample = 0; sample < inputBuffer.length; sample++) {
+            //                    // Просто копируем данные без изменений
+            //                    // Здесь вы можете добавить свою обработку звука
+            //                    outputData[sample] = inputData[sample];
+            //                }
+            //            }
+            //        };
+            //    })
+            //    .catch(function (err) {
+            //        console.log('An error occurred: ' + err);
+            //    });
+
+
+           
+            
+            recognition.lang = 'en-US'; // устанавливаем язык
+            //recognition.lang = 'ru-Ru';
+            recognition.interimResults = true; // только окончательные результаты
+            recognition.maxAlternatives = 1; // количество альтернативных вариантов
+
+            recognition.start(); // начинаем слушать
+
+            recognition.onresult = function (event) {
+                // получаем результаты
+                var speechResult = event.results[event.results.length - 1][0].transcript;
+                console.log('Результат: ' + speechResult);
             };
 
-            recognizer.start();
+            recognition.onspeechend = function () {
+                setTimeout(() => {
+                    recognition.start();
+                }, 1000)
+                
+                // // останавливаем слушать, когда речь заканчивается
+            };
+
+            recognition.onerror = function (event) {
+                console.log('Ошибка распознавания речи: ' + event.error);
+            };
+
         }
     </script>
 </body>
