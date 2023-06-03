@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 <head>
     <style>
         body{
@@ -8,24 +8,27 @@
 </head>
 <body>
     <p id="text"> </p>
+    <button onclick="myFunction()">Click me</button>
     <script>
-        var recognizer = new webkitSpeechRecognition();
-        recognizer.interimResults = true;
-        //recognizer.lang = 'ru-Ru';
-        recognizer.lang = 'en-En';
+        function myFunction() {
+            var recognizer = new webkitSpeechRecognition();
+            recognizer.interimResults = true;
+            //recognizer.lang = 'ru-Ru';
+            recognizer.lang = 'en-En';
 
-        recognizer.onresult = function (event) {
-          var result = event.results[event.resultIndex];
-          if (result.isFinal) {
-            alert('Вы сказали: ' + result[0].transcript);
-          } else {
+            recognizer.onresult = function (event) {
+                var result = event.results[event.resultIndex];
+                if (result.isFinal) {
+                    alert('Вы сказали: ' + result[0].transcript);
+                } else {
 
-              let p = document.getElementById("text");
-              p.innerText = 'Результат: ' + result[0].transcript;
-          }
-        };
+                    let p = document.getElementById("text");
+                    p.innerText = 'Результат: ' + result[0].transcript;
+                }
+            };
 
-        recognizer.start();
+            recognizer.start();
+        }
     </script>
 </body>
 </html>
