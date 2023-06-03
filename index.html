@@ -1,0 +1,31 @@
+﻿<html>
+<head>
+    <style>
+        body{
+            background: #007072;
+        }
+    </style>
+</head>
+<body>
+    <p id="text"> </p>
+    <script>
+        var recognizer = new webkitSpeechRecognition();
+        recognizer.interimResults = true;
+        //recognizer.lang = 'ru-Ru';
+        recognizer.lang = 'en-En';
+
+        recognizer.onresult = function (event) {
+          var result = event.results[event.resultIndex];
+          if (result.isFinal) {
+            alert('Вы сказали: ' + result[0].transcript);
+          } else {
+
+              let p = document.getElementById("text");
+              p.innerText = 'Результат: ' + result[0].transcript;
+          }
+        };
+
+        recognizer.start();
+    </script>
+</body>
+</html>
